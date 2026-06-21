@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Blender AR</title>
+
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+
+<body>
+
+<script>
+AFRAME.registerComponent('sun-follow', {
+  tick: function () {
+    const model = document.querySelector('#myModel');
+    const light = this.el;
+
+    if (!model) return;
+
+    const modelPos = new THREE.Vector3();
+    const lightPos = new THREE.Vector3();
+
+    model.object3D.getWorldPosition(modelPos);
+    light.object3D.getWorldPosition(lightPos);
+
+    light.object3D.lookAt(modelPos);
+  }
+});
+</script>
+
+<a-scene>
+
+    <!-- 🌑 DARK CINEMATIC AMBIENT -->
+    <a-light type="ambient" intensity="0.03" color="##BDCOCO"></a-light>
+
+    <!-- 🌞 SUN RIG (Blender-style control) -->
+    <a-entity id="sunRig" rotation="20 -0 0">
+
+        <a-light type="directional"
+                 intensity="0.8"
+                 position="0 10 0"
+                 castShadow="true"
+                 shadow-mapSize-width="1024"
+                 shadow-mapSize-height="1500">
+        </a-light>
+
+    </a-entity>
+
+    <!-- 🌌 SKY -->
+    <a-sky color="#708090"></a-sky>
+
+    <!-- 📦 ASSETS -->
+    <a-assets>
+        <a-asset-item id="model" src="periwpoly.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- 📷 CAMERA (Blender-style view angle) -->
+    <a-entity id="cameraRig" position="3 2.5 3.5" rotation="-35 20 0">
+        <a-camera look-controls="true"></a-camera>
+    </a-entity>
+
+    <!-- 🧱 MODEL -->
+    <a-entity
+        id="myModel"
+        gltf-model="#model"
+        position="0 0 0"
+        scale="0.3 0.3 0.3"
+        rotation="0 0 0"
+        shadow="cast: true; receive: true">
+    </a-entity>
+
+</a-scene>
+
+</body>
+</html>
