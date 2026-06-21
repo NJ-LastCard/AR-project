@@ -3,7 +3,10 @@
 <head>
 <title>My Blender AR</title>
 
+<!-- A-Frame -->
 <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+<!-- AR.js (THIS enables real camera background) -->
 <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
 
 </head>
@@ -27,111 +30,37 @@ AFRAME.registerComponent('sun-follow', {
 </script>
 
 <a-scene
-    embedded
-    arjs="sourceType: webcam; debugUIEnabled: false;"
-    vr-mode-ui="enabled: false"
-    renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true">
+  embedded
+  arjs="sourceType: webcam; debugUIEnabled: false;"
+  vr-mode-ui="enabled: false"
+  renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true">
 
-    <!-- 🌑 DARK CINEMATIC AMBIENT -->
-    <a-light type="ambient" intensity="0.15" color="#BDC0C0"></a-light>
+  <!-- 🌑 AMBIENT LIGHT (CINEMATIC) -->
+  <a-light type="ambient" intensity="0.25" color="#BDC0C0"></a-light>
 
-    <!-- 🌞 SUN RIG -->
-    <a-entity id="sunRig" rotation="20 0 0" sun-follow>
-        <a-light type="directional"
-                 intensity="1"
-                 position="0 10 5"
-                 castShadow="true">
-        </a-light>
-    </a-entity>
+  <!-- 🌞 DIRECTIONAL LIGHT -->
+  <a-light type="directional"
+           intensity="1"
+           position="2 5 3"
+           cast-shadow="true"></a-light>
 
-    <!-- 📦 ASSETS -->
-    <a-assets>
-        <a-asset-item id="model" src="periwpoly.glb"></a-asset-item>
-    </a-assets>
+  <!-- 📦 MODEL -->
+  <a-assets>
+    <a-asset-item id="model" src="periwpoly.glb"></a-asset-item>
+  </a-assets>
 
-    <!-- 📦 MODEL -->
-    <a-entity
-        id="myModel"
-        gltf-model="#model"
-        position="0 0 0"
-        scale="0.3 0.3 0.3"
-        rotation="0 180 0"
-        shadow="cast: true; receive: true">
-    </a-entity>
+  <!-- 🧱 YOUR BLENDER MODEL -->
+  <a-entity
+    id="myModel"
+    gltf-model="#model"
+    position="0 0 -2"
+    scale="0.3 0.3 0.3"
+    rotation="-35 20 0"
+    shadow="cast: true; receive: true">
+  </a-entity>
 
-    <!-- 📷 CAMERA (AR CAMERA FIX) -->
-    <a-entity camera></a-entity>
-
-    <!-- 🌌 SKY REMOVED (IMPORTANT FOR AR CAMERA) -->
-
-</a-scene>
-
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-<title>My Blender AR</title>
-
-<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.js"></script>
-
-</head>
-
-<body style="margin:0; overflow:hidden;">
-
-<script>
-AFRAME.registerComponent('sun-follow', {
-  tick: function () {
-    const model = document.querySelector('#myModel');
-    const light = this.el;
-
-    if (!model) return;
-
-    const modelPos = new THREE.Vector3();
-    model.object3D.getWorldPosition(modelPos);
-
-    light.object3D.lookAt(modelPos);
-  }
-});
-</script>
-
-<a-scene
-    embedded
-    arjs="sourceType: webcam; debugUIEnabled: false;"
-    vr-mode-ui="enabled: false"
-    renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true">
-
-    <!-- 🌑 DARK CINEMATIC AMBIENT -->
-    <a-light type="ambient" intensity="0.15" color="#BDC0C0"></a-light>
-
-    <!-- 🌞 SUN RIG -->
-    <a-entity id="sunRig" rotation="20 0 0" sun-follow>
-        <a-light type="directional"
-                 intensity="1"
-                 position="0 10 5"
-                 castShadow="true">
-        </a-light>
-    </a-entity>
-
-    <!-- 📦 ASSETS -->
-    <a-assets>
-        <a-asset-item id="model" src="periwpoly.glb"></a-asset-item>
-    </a-assets>
-
-    <!-- 📦 MODEL -->
-    <a-entity
-        id="myModel"
-        gltf-model="#model"
-        position="0 0 -2"
-        scale="0.3 0.3 0.3"
-        rotation="0 180 0"
-        shadow="cast: true; receive: true">
-    </a-entity>
-
-    <!-- 📷 CAMERA (AR CAMERA FIX) -->
-    <a-entity camera></a-entity>
-
-    <!-- 🌌 SKY REMOVED (IMPORTANT FOR AR CAMERA) -->
+  <!-- 📷 REAL AR CAMERA (DO NOT MOVE) -->
+  <a-entity camera></a-entity>
 
 </a-scene>
 
